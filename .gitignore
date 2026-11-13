@@ -17,3 +17,26 @@ runs/
 .vscode/
 *.swp
 .DS_Store
+# Model weights / large data
+models/
+checkpoints/
+*.safetensors
+*.bin
+*.pt
+*.pth
+
+# Media / demo data
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.webm
+
+# Gradio cache
+.gradio/
+gradio_cached_examples/
+flagged/
+
+# Backup files
+*.bundle
+app.py.bak*

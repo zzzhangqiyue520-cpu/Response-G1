@@ -1,0 +1,15 @@
+# Response-G1 云端运行所需的核心依赖（精简版）
+# 说明：torch 使用云镜像预装版本，这里不重复安装，避免 CUDA 版本冲突。
+transformers==4.57.1
+qwen-vl-utils
+accelerate
+sentencepiece
+opencv-python
+pillow
+pandas
+tqdm
+ffmpeg-python
+av
+decord
+einops
+numpy

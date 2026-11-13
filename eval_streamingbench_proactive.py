@@ -167,7 +167,7 @@ def eval(args):
     model = Qwen3VLForConditionalGeneration.from_pretrained(
         args.ckpt_path,
         dtype=torch.bfloat16,
-        attn_implementation="flash_attention_2",
+        attn_implementation="sdpa",
         device_map="auto",
         trust_remote_code=True,
     )
@@ -283,7 +283,7 @@ def eval(args):
                     response_prompt_embeddings = model.get_input_embeddings()(response_ids_tensor)
 
                     # --- Stage 1: trigger (yes/no) ---
-                    past_frame_tokens = memories.get_context_frames(context_window=frame_idx-start_frame+1)
+                    past_frame_tokens = memories.get_context_frames(context_window=min(16, frame_idx-start_frame+1))
                     past_frame_tokens = torch.cat(past_frame_tokens, dim=1).to(model.device)
                     input_embeddings = torch.cat([past_frame_tokens, trigger_prompt_embeddings], dim=1).to(model.device)
 
@@ -312,7 +312,7 @@ def eval(args):
 
                     # --- Stage 2: answer when trigger fires ---
                     if 'yes' in response.strip().lower():
-                        past_frame_tokens = memories.get_context_frames(context_window=frame_idx-start_frame+1)
+                        past_frame_tokens = memories.get_context_frames(context_window=min(16, frame_idx-start_frame+1))
                         past_frame_tokens = torch.cat(past_frame_tokens, dim=1).to(model.device)
                         input_embeddings = torch.cat([past_frame_tokens, response_prompt_embeddings], dim=1).to(model.device)
 
